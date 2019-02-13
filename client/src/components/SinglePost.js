@@ -60,7 +60,7 @@ class SinglePost extends Component {
   render() {
     const { post, comments } = this.props;
     return (
-      <div>
+      <div className="container">
         {post && (
           <div>
             <h3>{post.title}</h3>
@@ -68,43 +68,52 @@ class SinglePost extends Component {
             <p>{post.body}</p>
           </div>
         )}
-        <form onSubmit={this.handleComment}>
-          <input
-            type="text"
-            name="comment"
-            value={this.state.comment}
-            placeholder="write Comment"
-            onChange={this.handleChange}
-          />
-          <input
-            type="submit"
-            value="Comment"
-            className="btn"
-            onClick={this.handleComment}
-          />
-        </form>
-        <div>
-          {comments &&
-            comments.map(comment => {
-              return (
-                <div key={comment._id}>
-                  <span>
-                    <span contentEditable="true" onInput={this.handleEdit}>
-                      {comment.comment}
-                    </span>
-                    <i
-                      className="fas fa-edit"
-                      onClick={() => this.handleCommentEdit}
-                    />
-                  </span>
-
-                  <i
-                    className="fas fa-trash-alt"
-                    onClick={() => this.handleDelComment(comment._id)}
-                  />
-                </div>
-              );
-            })}
+        <div className="comment-container">
+          <form onSubmit={this.handleComment} className="comment-form">
+            <div className="comment-box">
+              <input
+                type="text"
+                name="comment"
+                value={this.state.comment}
+                placeholder="write Comment"
+                onChange={this.handleChange}
+                className="input"
+              />
+              <input
+                type="submit"
+                value="Comment"
+                className="btn comment-btn"
+                onClick={this.handleComment}
+              />
+            </div>
+          </form>
+          <div>
+            {comments &&
+              comments.map(comment => {
+                return (
+                  <div key={comment._id} className="comment-card">
+                    <div className="comment">
+                      <span contentEditable="true" onInput={this.handleEdit}>
+                        {comment.comment}
+                      </span>
+                    </div>
+                    <div className="card-footer">
+                      <span onClick={this.handleCommentEdit} className="footer">
+                        Edit
+                      </span>
+                      <span>&nbsp;</span>
+                      <span>&nbsp;</span>
+                      <span
+                        onClick={() => this.handleDelComment(comment._id)}
+                        className="footer"
+                      >
+                        Delete
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
     );

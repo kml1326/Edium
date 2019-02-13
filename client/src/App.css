@@ -69,3 +69,40 @@ a:hover {
   text-transform: capitalize;
   font-weight: 600;
 }
+.container {
+  width: 70%;
+  margin: 2rem auto;
+}
+.comment-container {
+  width: 50%;
+  margin: 2rem auto;
+}
+.comment-form {
+  width: 100%;
+}
+.comment-box {
+  display: flex;
+}
+.comment-box .input {
+  margin: 0;
+}
+.comment-btn {
+  margin: 0;
+}
+.comment-card {
+  margin-top: 1rem;
+  box-shadow: 1px 1px 3px 1px #7c7979;
+}
+.comment {
+  font-size: 1.2rem;
+  padding: 1rem;
+}
+.card-footer {
+  font-size: .9rem;
+  background: #d9dddd;
+  padding: .4rem .6rem;
+}
+.footer:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
