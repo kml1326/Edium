@@ -3,8 +3,8 @@ import { getAllPostsAction, createPostAction } from "../action/action";
 import { connect } from "react-redux";
 
 class DashBoard extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       title: "",
       description: "",
@@ -37,7 +37,7 @@ class DashBoard extends Component {
     fetch(`/posts/${id}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       }
     })
       .then(res => res.json())
@@ -47,7 +47,7 @@ class DashBoard extends Component {
           data
         });
       });
-  }
+  };
 
   componentDidMount = () => {
     this.props.dispatch(getAllPostsAction());
@@ -56,13 +56,13 @@ class DashBoard extends Component {
   render() {
     const { title, description, body } = this.state;
     return (
-      <div>
-        <form>
+      <div className="main">
+        <form className=" post-form col-1-2">
           <input
             type="text"
             name="title"
             placeholder="title"
-            className="input"
+            className="input title"
             onChange={this.handleChange}
             value={title}
           />
@@ -70,15 +70,16 @@ class DashBoard extends Component {
             type="text"
             name="description"
             placeholder="description"
-            className="input"
+            className="input desc"
             onChange={this.handleChange}
             value={description}
           />
           <textarea
-            className="text-area"
+            className="text-area body"
             name="body"
             placeholder="write post"
             onChange={this.handleChange}
+            value={body}
           >
             {body}
           </textarea>
@@ -91,30 +92,34 @@ class DashBoard extends Component {
           />
         </form>
 
-        <div>
+        <div className="post-list col-1-2">
           {this.props.posts.length
             ? this.props.posts.map(post => {
-              return (
-                <div>
-                  <a
-                    href={`/posts/${post._id}`}
-                    key={post._id}
-                    className="post"
-                  >
-                    {post.title}
-                  </a>
-                  <i
-                    className="fas fa-edit"
-                    onClick={() => this.handlePostEdit}
-                  />
-
-                <i
-                  className="fas fa-trash-alt"
-                  onClick={() => this.handleDelPost(post._id)}
-                /></div>
-          );
-        })
-      : ""}
+                return (
+                  <div key={post._id} className="post">
+                    <a
+                      href={`/posts/${post._id}`}
+                      key={post._id}
+                      className="post-title"
+                    >
+                      {post.title}
+                    </a>
+                    <span>
+                      <i
+                        className="fas fa-edit"
+                        onClick={() => this.handlePostEdit}
+                      />
+                      <span>&nbsp;</span>
+                      <span>&nbsp;</span>
+                      <i
+                        className="fas fa-trash-alt"
+                        onClick={() => this.handleDelPost(post._id)}
+                      />
+                    </span>
+                  </div>
+                );
+              })
+            : ""}
         </div>
       </div>
     );
