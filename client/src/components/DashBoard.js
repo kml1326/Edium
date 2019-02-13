@@ -33,6 +33,21 @@ class DashBoard extends Component {
       body: ""
     });
   };
+  handleDelPost = id => {
+    fetch(`/posts/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.props.dispatch({
+          type: "ALL_POSTS",
+          data
+        });
+      });
+  }
 
   componentDidMount = () => {
     this.props.dispatch(getAllPostsAction());
@@ -79,7 +94,8 @@ class DashBoard extends Component {
         <div>
           {this.props.posts.length
             ? this.props.posts.map(post => {
-                return (
+              return (
+                <div>
                   <a
                     href={`/posts/${post._id}`}
                     key={post._id}
@@ -87,9 +103,18 @@ class DashBoard extends Component {
                   >
                     {post.title}
                   </a>
-                );
-              })
-            : ""}
+                  <i
+                    className="fas fa-edit"
+                    onClick={() => this.handlePostEdit}
+                  />
+
+                <i
+                  className="fas fa-trash-alt"
+                  onClick={() => this.handleDelPost(post._id)}
+                /></div>
+          );
+        })
+      : ""}
         </div>
       </div>
     );
