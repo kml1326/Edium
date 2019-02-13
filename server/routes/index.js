@@ -47,4 +47,19 @@ router.delete("/comment/:id", (req, res) => {
   });
 });
 
+router.put("/comment/:id", (req, res) => {
+  console.log(req.params.id, req.headers, "comment edit");
+  Comment.findByIdAndUpdate(req.params.id, { comment: req.headers.comment, postId: req.headers.postid, createdAt: new Date()}, (err, data) => {
+    console.log(data, "update data");
+    if (data) {
+      Comment.find({ postId: req.headers.postid }, (err, data) => {
+        if (err) throw err;
+        else {
+          res.status(200).json(data);
+        }
+      });
+    }
+  });
+});
+
 module.exports = router;
