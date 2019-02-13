@@ -37,6 +37,10 @@ class SinglePost extends Component {
 
   };
   handleCommentEditDone = (id) => {
+    if(!this.state.editComment){
+      this.setState({editCommentId : ""})
+      return;
+    } 
     fetch(`/comment/${id}`, {
       method: "PUT",
       headers: {
@@ -114,7 +118,7 @@ class SinglePost extends Component {
                 return (
                   <div key={comment._id}>
                     <span>
-                      <input type="text" value={this.state.editComment || comment.comment} onChange={this.handleChange} name="editComment"/>
+                      <input type="text" value={this.state.editComment ||comment.comment} onChange={this.handleChange} name="editComment"/>
                       </span>
                       <i
                         className="fas fa-check-square"
