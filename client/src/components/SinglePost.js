@@ -12,7 +12,7 @@ class SinglePost extends Component {
     this.state = {
       comment: "",
       editComment: "",
-      editCommentId:"",
+      editCommentId: ""
     };
   }
 
@@ -24,7 +24,7 @@ class SinglePost extends Component {
 
   handleComment = e => {
     e.preventDefault();
-    if(!this.state.comment) return;
+    if (!this.state.comment) return;
     const data = {
       id: this.props.post._id,
       comment: this.state.comment
@@ -33,20 +33,19 @@ class SinglePost extends Component {
     this.setState({ comment: "" });
   };
   handleCommentEdit = id => {
-    this.setState({editCommentId : id});
-
+    this.setState({ editCommentId: id });
   };
-  handleCommentEditDone = (id) => {
-    if(!this.state.editComment){
-      this.setState({editCommentId : ""})
+  handleCommentEditDone = id => {
+    if (!this.state.editComment) {
+      this.setState({ editCommentId: "" });
       return;
-    } 
+    }
     fetch(`/comment/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         postId: this.props.post._id,
-        comment:this.state.editComment,
+        comment: this.state.editComment
       }
     })
       .then(res => res.json())
@@ -57,7 +56,8 @@ class SinglePost extends Component {
         });
         this.setState({
           editComment: "",
-          editCommentId: ""})
+          editCommentId: ""
+        });
       });
   };
 
@@ -118,16 +118,28 @@ class SinglePost extends Component {
           <div>
             {comments &&
               comments.map(comment => {
-                if(comment._id == this.state.editCommentId) {
+                if (comment._id == this.state.editCommentId) {
                   return (
-                    <div key={comment._id}>
-                      <span>
-                        <input type="text" value={this.state.editComment ||comment.comment} onChange={this.handleChange} name="editComment"/>
-                        </span>
-                        <i
-                          className="fas fa-check-square"
-                          onClick={() => this.handleCommentEditDone(comment._id)}
+                    <div key={comment._id} className="comment-card">
+                      <div className="comment">
+                        <input
+                          type="text"
+                          value={this.state.editComment || comment.comment}
+                          onChange={this.handleChange}
+                          name="editComment"
+                          className="input edit-comment"
                         />
+                      </div>
+                      <div className="card-footer">
+                        <span
+                          className="footer"
+                          onClick={() =>
+                            this.handleCommentEditDone(comment._id)
+                          }
+                        >
+                          Done
+                        </span>
+                      </div>
                     </div>
                   );
                 }
@@ -139,7 +151,10 @@ class SinglePost extends Component {
                       </span>
                     </div>
                     <div className="card-footer">
-                      <span onClick={() => this.handleCommentEdit(comment._id)} className="footer">
+                      <span
+                        onClick={() => this.handleCommentEdit(comment._id)}
+                        className="footer"
+                      >
                         Edit
                       </span>
                       <span>&nbsp;</span>
@@ -155,26 +170,6 @@ class SinglePost extends Component {
                 );
               })}
           </div>
-        
-
-        <div>
-          {comments &&
-            comments.map(comment => {
-              if(comment._id == this.state.editCommentId) {
-                return (
-                  <div key={comment._id}>
-                    <span>
-                      <input type="text" value={this.state.editComment ||comment.comment} onChange={this.handleChange} name="editComment"/>
-                      </span>
-                      <i
-                        className="fas fa-check-square"
-                        onClick={() => this.handleCommentEditDone(comment._id)}
-                      />
-                  </div>
-                );
-              }
-              
-            })}
         </div>
       </div>
     );

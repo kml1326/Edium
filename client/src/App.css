@@ -106,3 +106,7 @@ a:hover {
   text-decoration: underline;
   cursor: pointer;
 }
+.edit-comment {
+  display: inline-block;
+  width: 90%;
+}
