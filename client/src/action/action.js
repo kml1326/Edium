@@ -63,7 +63,6 @@ export function createCommentAction(data) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data, "comments");
         if (data) {
           dispatch({
             type: "ALL_CURRENT_COMMENTS",
