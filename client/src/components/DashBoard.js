@@ -8,7 +8,8 @@ class DashBoard extends Component {
     this.state = {
       title: "",
       description: "",
-      body: ""
+      body: "",
+      editPost:{}
     };
   }
 
@@ -49,30 +50,40 @@ class DashBoard extends Component {
       });
   };
 
+  handlePostEdit(obj){
+    this.setState({editPost:{...obj}});
+  }
+
   componentDidMount = () => {
     this.props.dispatch(getAllPostsAction());
   };
 
   render() {
-    const { title, description, body } = this.state;
+    const { title, description, body,editPost } = this.state;
     return (
       <div className="main">
         <form className=" post-form col-1-2">
           <input
             type="text"
+            name="objectId"
+            className="input"
+            value= {editPost._id || ""}
+          /> 
+          <input 
+            type="text"
             name="title"
+            value={editPost.title || title}
             placeholder="title"
             className="input title"
             onChange={this.handleChange}
-            value={title}
           />
           <input
             type="text"
             name="description"
+            value={editPost.description || description}
             placeholder="description"
             className="input desc"
             onChange={this.handleChange}
-            value={description}
           />
           <textarea
             className="text-area body"
@@ -81,7 +92,7 @@ class DashBoard extends Component {
             onChange={this.handleChange}
             value={body}
           >
-            {body}
+            {editPost.description || body}
           </textarea>
           <input
             type="submit"

@@ -11,7 +11,8 @@ class SinglePost extends Component {
     super(props);
     this.state = {
       comment: "",
-      editComment: ""
+      editComment: "",
+      editCommentId:"",
     };
   }
 
@@ -23,6 +24,7 @@ class SinglePost extends Component {
 
   handleComment = e => {
     e.preventDefault();
+    if(!this.state.comment) return;
     const data = {
       id: this.props.post._id,
       comment: this.state.comment
@@ -30,9 +32,35 @@ class SinglePost extends Component {
     this.props.dispatch(createCommentAction(data));
     this.setState({ comment: "" });
   };
-  handleEdit = e => {
-    console.dir(e.target);
+  handleCommentEdit = id => {
+    this.setState({editCommentId : id});
+
   };
+  handleCommentEditDone = (id) => {
+    if(!this.state.editComment){
+      this.setState({editCommentId : ""})
+      return;
+    } 
+    fetch(`/comment/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        postId: this.props.post._id,
+        comment:this.state.editComment,
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.props.dispatch({
+          type: "ALL_CURRENT_COMMENTS",
+          data
+        });
+        this.setState({
+          editComment: "",
+          editCommentId: ""})
+      });
+  };
+
   handleDelComment = id => {
     console.log("id", id, `/comment/${id}`);
     fetch(`/comment/${id}`, {
@@ -86,15 +114,28 @@ class SinglePost extends Component {
         <div>
           {comments &&
             comments.map(comment => {
+              if(comment._id == this.state.editCommentId) {
+                return (
+                  <div key={comment._id}>
+                    <span>
+                      <input type="text" value={this.state.editComment ||comment.comment} onChange={this.handleChange} name="editComment"/>
+                      </span>
+                      <i
+                        className="fas fa-check-square"
+                        onClick={() => this.handleCommentEditDone(comment._id)}
+                      />
+                  </div>
+                );
+              }
               return (
                 <div key={comment._id}>
                   <span>
-                    <span contentEditable="true" onInput={this.handleEdit}>
+                    <span >
                       {comment.comment}
                     </span>
                     <i
                       className="fas fa-edit"
-                      onClick={() => this.handleCommentEdit}
+                      onClick={() => this.handleCommentEdit(comment._id)}
                     />
                   </span>
 
