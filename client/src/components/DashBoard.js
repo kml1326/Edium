@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getAllPostsAction, createPostAction } from "../action/action";
+import { getAllPostsAction, createPostAction,updatePostAction } from "../action/action";
 import { connect } from "react-redux";
 
 class DashBoard extends Component {
@@ -9,7 +9,8 @@ class DashBoard extends Component {
       title: "",
       description: "",
       body: "",
-      editPost:{}
+      editPost:{},
+      editId:"",
     };
   }
 
@@ -18,11 +19,22 @@ class DashBoard extends Component {
       [e.target.name]: e.target.value
     });
   };
+  handleEditChange = e =>{
+    let name = e.target.name;
+    let value = e.target.value;
+    this.setState(state =>{
+      return{
+        editPost: {
+          ...state.editPost, [name] : value}
+      }
+    })
+  }
 
   handleCreate = e => {
     e.preventDefault();
-    const { title, description, body } = this.state;
+    const { title, description, body, editId } = this.state;
     const data = {
+      id:editId,
       title,
       description,
       body
@@ -31,9 +43,26 @@ class DashBoard extends Component {
     this.setState({
       title: "",
       description: "",
-      body: ""
+      body: "",
     });
   };
+
+  handleUpdate = e =>{
+    e.preventDefault();
+    const { title, description, body } = this.state.editPost;
+    const data = {
+      id: this.state.editId,
+      title,
+      description,
+      body
+    };
+    this.props.dispatch(updatePostAction(data));
+    this.setState({
+      editId:"",
+      editPost:{}
+    });
+  }
+
   handleDelPost = id => {
     fetch(`/posts/${id}`, {
       method: "DELETE",
@@ -51,7 +80,7 @@ class DashBoard extends Component {
   };
 
   handlePostEdit(obj){
-    this.setState({editPost:{...obj}});
+    this.setState({editPost:{...obj},editId:obj._id});
   }
 
   componentDidMount = () => {
@@ -59,53 +88,54 @@ class DashBoard extends Component {
   };
 
   render() {
-    const { title, description, body,editPost } = this.state;
+    const { editId,title, description, body,editPost } = this.state;
     return (
       <div className="main">
         <form className=" post-form col-1-2">
           <input
             type="text"
             name="objectId"
-            className="input"
-            value= {editPost._id || ""}
+            className="input none"
+            value={editId}
           /> 
           <input 
             type="text"
             name="title"
-            value={editPost.title || title}
+            value={(editId) ? editPost.title : title}
             placeholder="title"
             className="input title"
-            onChange={this.handleChange}
+            onChange={(editId) ? this.handleEditChange :this.handleChange}
           />
           <input
             type="text"
             name="description"
-            value={editPost.description || description}
+            value={(editId) ? editPost.description : description}
             placeholder="description"
             className="input desc"
-            onChange={this.handleChange}
+            onChange={(editId) ? this.handleEditChange :this.handleChange}
           />
           <textarea
             className="text-area body"
             name="body"
             placeholder="write post"
-            onChange={this.handleChange}
-            value={body}
+            onChange={(editId) ? this.handleEditChange :this.handleChange}
+            value={(editId) ? editPost.body : body}
           >
-            {editPost.description || body}
+            {(editId) ? editPost.body : body}
           </textarea>
           <input
             type="submit"
-            value="Create Post"
+            value={(editId) ? "Update Post" :"create Post" }
             placeholder=""
             className="btn"
-            onClick={this.handleCreate}
+            onClick={(editId) ? this.handleUpdate :this.handleCreate}
           />
         </form>
 
         <div className="post-list col-1-2">
           {this.props.posts.length
             ? this.props.posts.map(post => {
+              if(post._id == editId) return null;
                 return (
                   <div key={post._id} className="post">
                     <a
@@ -118,7 +148,7 @@ class DashBoard extends Component {
                     <span>
                       <i
                         className="fas fa-edit"
-                        onClick={() => this.handlePostEdit}
+                        onClick={() => this.handlePostEdit(post)}
                       />
                       <span>&nbsp;</span>
                       <span>&nbsp;</span>

@@ -8,6 +8,8 @@ router.get("/check", (req, res) => {
 
 router.post("/create", postController.create);
 
+router.put("/create", postController.update);
+
 router.get("/posts", postController.allPosts);
 
 router.get("/posts/:id", postController.singlePost);

@@ -21,6 +21,27 @@ export function createPostAction(data) {
   };
 }
 
+export function updatePostAction(data) {
+  return dispatch => {
+    fetch(`${baseUrl}/create`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.length) {
+          dispatch({
+            type: "ALL_POSTS",
+            data
+          });
+        }
+      });
+  };
+}
+
 export function getAllPostsAction() {
   return dispatch => {
     fetch(`${baseUrl}/posts`)

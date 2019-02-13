@@ -1,6 +1,9 @@
 .App {
   text-align: left;
 }
+.none{
+  display: none;
+}
 a {
   text-decoration: none;
   color: #33c3f0;

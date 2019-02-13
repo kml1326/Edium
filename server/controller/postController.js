@@ -3,17 +3,29 @@ const Comment = require("../model/Comment");
 
 module.exports = {
   create: (req, res) => {
-    const { title, description, body } = req.body;
+    console.log(req.body)
+    const { title, description, body ,id } = req.body;
     const newPost = new Post({
       title,
       description,
       body,
-      commentList: [],
       createdAt: new Date()
     });
     newPost.save((err, data) => {
       if (err) throw err;
       else {
+        Post.find({}, (err, data) => {
+          res.json(data);
+        });
+      }
+    });
+  },
+
+  update: (req, res) => {
+    console.log(req.body)
+    const { title, description, body, id } = req.body;
+    Post.findByIdAndUpdate(id,{title,description,body,createdAt:new Date()},(err,data) =>{
+      if(data) {
         Post.find({}, (err, data) => {
           res.json(data);
         });
