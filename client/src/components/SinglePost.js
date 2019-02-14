@@ -15,6 +15,11 @@ class SinglePost extends Component {
       editCommentId: ""
     };
   }
+  componentDidMount = () => {
+    const id = this.props.location.pathname.split("/")[2];
+    this.props.dispatch(getSinglePostAction(id));
+    this.props.dispatch(getAllComments(id));
+  };
 
   handleChange = e => {
     this.setState({
@@ -32,9 +37,11 @@ class SinglePost extends Component {
     this.props.dispatch(createCommentAction(data));
     this.setState({ comment: "" });
   };
+
   handleCommentEdit = id => {
     this.setState({ editCommentId: id });
   };
+
   handleCommentEditDone = id => {
     if (!this.state.editComment) {
       this.setState({ editCommentId: "" });
@@ -79,21 +86,15 @@ class SinglePost extends Component {
       });
   };
 
-  componentDidMount = () => {
-    const id = this.props.location.pathname.split("/")[2];
-    this.props.dispatch(getSinglePostAction(id));
-    this.props.dispatch(getAllComments(id));
-  };
-
   render() {
     const { post, comments } = this.props;
     return (
       <div className="container">
         {post && (
           <div>
-            <h3>{post.title}</h3>
-            <h5>{post.description}</h5>
-            <p>{post.body}</p>
+            <h1 className="title">{post.title}</h1>
+            <h2 className="desc">{post.description}</h2>
+            <p className="body">{post.body}</p>
           </div>
         )}
         <div className="comment-container">
@@ -146,9 +147,7 @@ class SinglePost extends Component {
                 return (
                   <div key={comment._id} className="comment-card">
                     <div className="comment">
-                      <span contentEditable="true" onInput={this.handleEdit}>
-                        {comment.comment}
-                      </span>
+                      <span onInput={this.handleEdit}>{comment.comment}</span>
                     </div>
                     <div className="card-footer">
                       <span

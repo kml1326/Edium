@@ -3,8 +3,7 @@ const Comment = require("../model/Comment");
 
 module.exports = {
   create: (req, res) => {
-    console.log(req.body)
-    const { title, description, body ,id } = req.body;
+    const { title, description, body } = req.body;
     const newPost = new Post({
       title,
       description,
@@ -12,36 +11,44 @@ module.exports = {
       createdAt: new Date()
     });
     newPost.save((err, data) => {
-      if (err) throw err;
+      if (err) res.status(404);
       else {
         Post.find({}, (err, data) => {
-          res.json(data);
+          if (err) res.status(404);
+          else res.json(data);
         });
       }
     });
   },
 
   update: (req, res) => {
-    console.log(req.body)
     const { title, description, body, id } = req.body;
-    Post.findByIdAndUpdate(id,{title,description,body,createdAt:new Date()},(err,data) =>{
-      if(data) {
-        Post.find({}, (err, data) => {
-          res.json(data);
-        });
+    Post.findByIdAndUpdate(
+      id,
+      { title, description, body, createdAt: new Date() },
+      (err, data) => {
+        if (err) res.status(404);
+        else {
+          Post.find({}, (err, data) => {
+            if (err) res.status(404);
+            else res.json(data);
+          });
+        }
       }
-    });
+    );
   },
 
   allPosts: (req, res) => {
     Post.find({}, (err, data) => {
-      res.json(data);
+      if (err) res.status(404);
+      else res.json(data);
     });
   },
 
   singlePost: (req, res) => {
     Post.findById(req.params.id, (err, data) => {
-      res.json(data);
+      if (err) res.status(404);
+      else res.json(data);
     });
   },
 
@@ -53,9 +60,10 @@ module.exports = {
       createdAt: new Date()
     });
     newComment.save((err, data) => {
-      if (data) {
+      if (err) res.status(404);
+      else {
         Comment.find({ postId: id }, (err, data) => {
-          if (err) throw err;
+          if (err) res.status(404);
           else {
             res.status(200).json(data);
           }
@@ -67,7 +75,7 @@ module.exports = {
   allComments: (req, res) => {
     const { id } = req.params;
     Comment.find({ postId: id }, (err, data) => {
-      if (err) throw err;
+      if (err) res.status(404);
       else {
         res.status(200).json(data);
       }

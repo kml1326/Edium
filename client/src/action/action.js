@@ -98,7 +98,6 @@ export function getAllComments(id) {
     fetch(`${baseUrl}/${id}/comments`)
       .then(res => res.json())
       .then(data => {
-        console.log(data, "comments");
         if (data) {
           dispatch({
             type: "ALL_CURRENT_COMMENTS",

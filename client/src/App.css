@@ -1,7 +1,7 @@
 .App {
   text-align: left;
 }
-.none{
+.none {
   display: none;
 }
 a {
@@ -29,14 +29,14 @@ a:hover {
   border-radius: 5px;
   border: 1px solid #33c3f0;
 }
-.title {
+.title-box {
   font-size: 1.6rem;
 }
-.desc {
+.desc-box {
   display: inline-block;
   font-size: 1.2rem;
 }
-.body {
+.body-box {
   display: inline-block;
   font-size: 1.2rem;
   height: 20rem;
@@ -71,6 +71,7 @@ a:hover {
   font-size: 1.5rem;
   text-transform: capitalize;
   font-weight: 600;
+  word-break: break-word;
 }
 .container {
   width: 70%;
@@ -101,9 +102,9 @@ a:hover {
   padding: 1rem;
 }
 .card-footer {
-  font-size: .9rem;
+  font-size: 0.9rem;
   background: #d9dddd;
-  padding: .4rem .6rem;
+  padding: 0.4rem 0.6rem;
 }
 .footer:hover {
   text-decoration: underline;
@@ -112,4 +113,35 @@ a:hover {
 .edit-comment {
   display: inline-block;
   width: 90%;
+}
+.title {
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-family: serif;
+  font-size: 2.8rem;
+  text-transform: capitalize;
+}
+.desc {
+  font-family: sans-serif;
+  font-weight: 400;
+  color: #636060;
+}
+.body {
+  font-family: sans-serif;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #d4cdcd;
+  margin-bottom: 4rem;
+  padding: 1rem 0 3rem 0;
+}
+.fa-edit:before,
+.fa-trash-alt:before {
+  padding: 5px;
+  display: inline-block;
+}
+.error-msg {
+  padding: 1rem 0;
+  color: #1aa5cf;
+  text-align: center;
 }
