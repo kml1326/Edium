@@ -1,6 +1,15 @@
 .App {
   text-align: left;
 }
+.header {
+  padding: 20px;
+  box-shadow: 3px 3px 8px 0.5px #f1efef;
+}
+.logo {
+  margin-left: 3rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
 .none {
   display: none;
 }
@@ -19,7 +28,7 @@ a:hover {
   display: inline-block;
   width: 50%;
   box-sizing: border-box;
-  padding: 3rem 2rem;
+  padding: 1rem 2rem;
 }
 .input,
 .text-area {
@@ -28,6 +37,8 @@ a:hover {
   margin: 10px 0;
   border-radius: 5px;
   border: 1px solid #33c3f0;
+  outline: none;
+  overflow: hidden;
 }
 .title-box {
   font-size: 1.6rem;
@@ -39,7 +50,7 @@ a:hover {
 .body-box {
   display: inline-block;
   font-size: 1.2rem;
-  height: 20rem;
+  height: 18rem;
 }
 .btn {
   display: inline-block;
